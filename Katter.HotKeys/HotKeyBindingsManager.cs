@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Diagnostics;
+﻿using System.Collections.Immutable;
+using CommunityToolkit.Diagnostics;
 using Katter.HotKeys.Behaviours;
 
 namespace Katter.HotKeys;
@@ -15,26 +16,30 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : class
 	{
 		HotKeyBinding<TGesture> binding = new(name, behaviour, gesture);
 		if (gesture != null)
-			_bindings.Add(gesture, binding);
+			GetOrCreateGesturesList(gesture).Add(binding);
 		binding.GestureChanged.Subscribe(OnBindingGestureChanged);
 		binding.Disposed.Subscribe(OnBindingDisposed);
 		return binding;
 	}
 
-	private readonly Dictionary<TGesture, HotKeyBinding<TGesture>> _bindings = new();
-	private readonly Dictionary<TGesture, HotKeyBinding<TGesture>> _pressedBindings = new();
+	private readonly Dictionary<TGesture, List<HotKeyBinding<TGesture>>> _bindings = new();
+	private readonly Dictionary<TGesture, ImmutableArray<HotKeyBinding<TGesture>>> _pressedBindings = new();
 
 	private void OnPressed(TGesture gesture)
 	{
-		if (!_bindings.TryGetValue(gesture, out var binding))
+		if (!_bindings.TryGetValue(gesture, out var bindings))
 			return;
-		_pressedBindings.Add(gesture, binding);
-		binding.OnPressed();
+		var pressedBindings = bindings.ToImmutableArray();
+		_pressedBindings.Add(gesture, pressedBindings);
+		foreach (var binding in pressedBindings)
+			binding.OnPressed();
 	}
 
 	private void OnReleased(TGesture gesture)
 	{
-		if (_pressedBindings.Remove(gesture, out var binding))
+		var isRemoved = _pressedBindings.Remove(gesture, out var bindings);
+		Guard.IsTrue(isRemoved);
+		foreach (var binding in bindings)
 			binding.OnReleased();
 	}
 
@@ -48,11 +53,19 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : class
 	{
 		if (t.oldGesture != null)
 		{
-			bool isRemoved = _bindings.Remove(t.oldGesture, out var removedBinding);
+			bool isRemoved = _bindings[t.oldGesture].Remove(t.sender);
 			Guard.IsTrue(isRemoved);
-			Guard.IsReferenceEqualTo(removedBinding!, t.sender);
 		}
 		if (t.newGesture != null)
-			_bindings.Add(t.newGesture, t.sender);
+			GetOrCreateGesturesList(t.newGesture).Add(t.sender);
+	}
+
+	private List<HotKeyBinding<TGesture>> GetOrCreateGesturesList(TGesture gesture)
+	{
+		if (_bindings.TryGetValue(gesture, out var existingList))
+			return existingList;
+		List<HotKeyBinding<TGesture>> newList = new();
+		_bindings.Add(gesture, newList);
+		return newList;
 	}
 }
