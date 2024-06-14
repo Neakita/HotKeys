@@ -1,8 +1,9 @@
-﻿using Katter.HotKeys.Behaviours;
+﻿using CommunityToolkit.Diagnostics;
+using Katter.HotKeys.Behaviours;
 
 namespace Katter.HotKeys;
 
-public sealed class HotKeyBindingsManager<TGesture> where TGesture : notnull
+public sealed class HotKeyBindingsManager<TGesture> where TGesture : class
 {
 	public HotKeyBindingsManager(GestureManager<TGesture> gestureManager)
 	{
@@ -10,32 +11,14 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : notnull
 		gestureManager.GestureReleased.Subscribe(OnReleased);
 	}
 
-	public HotKeyBinding<TGesture> CreateBinding(string name, BindingBehaviour behaviour, TGesture gesture)
+	public HotKeyBinding<TGesture> CreateBinding(string name, BindingBehaviour behaviour, TGesture? gesture = null)
 	{
-		HotKeyBinding<TGesture> binding = new(name, gesture, behaviour, () => _bindings.Remove(gesture));
-		_bindings.Add(gesture, binding);
-		return binding;
-	}
-
-	public HotKeyBinding<TGesture> CreateBinding(string name, BindingBehaviour behaviour)
-	{
-		return new HotKeyBinding<TGesture>(name, behaviour);
-	}
-
-	public void SetGesture(HotKeyBinding<TGesture> binding, TGesture? gesture)
-	{
-		if (binding.IsDisposed)
-			throw new ObjectDisposedException(binding.Name, "Binding is disposed");
-		if (binding.Gesture != null)
-			_bindings.Remove(binding.Gesture);
-		binding.Gesture = gesture;
-		if (gesture == null)
-			binding.DisposeAction = null;
-		else
-		{
+		HotKeyBinding<TGesture> binding = new(name, behaviour, gesture);
+		if (gesture != null)
 			_bindings.Add(gesture, binding);
-			binding.DisposeAction = () => _bindings.Remove(gesture);
-		}
+		binding.GestureChanged.Subscribe(OnBindingGestureChanged);
+		binding.Disposed.Subscribe(OnBindingDisposed);
+		return binding;
 	}
 
 	private readonly Dictionary<TGesture, HotKeyBinding<TGesture>> _bindings = new();
@@ -53,5 +36,23 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : notnull
 	{
 		if (_pressedBindings.Remove(gesture, out var binding))
 			binding.OnReleased();
+	}
+
+	private void OnBindingDisposed(HotKeyBinding<TGesture> disposedBinding)
+	{
+		if (disposedBinding.Gesture != null)
+			_bindings.Remove(disposedBinding.Gesture);
+	}
+
+	private void OnBindingGestureChanged((HotKeyBinding<TGesture> sender, TGesture? oldGesture, TGesture? newGesture) t)
+	{
+		if (t.oldGesture != null)
+		{
+			bool isRemoved = _bindings.Remove(t.oldGesture, out var removedBinding);
+			Guard.IsTrue(isRemoved);
+			Guard.IsReferenceEqualTo(removedBinding!, t.sender);
+		}
+		if (t.newGesture != null)
+			_bindings.Add(t.newGesture, t.sender);
 	}
 }
