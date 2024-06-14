@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SharpHook" Version="5.3.6" />
+      <PackageReference Include="SharpHook.Reactive" Version="5.3.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Katter.HotKeys\Katter.HotKeys.csproj" />
+    </ItemGroup>
+
+</Project>

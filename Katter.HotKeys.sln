@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katter.HotKeys", "Katter.HotKeys\Katter.HotKeys.csproj", "{37503561-22C4-4BD3-A004-499800FF0FA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katter.HotKeys.SharpHook", "Katter.HotKeys.SharpHook\Katter.HotKeys.SharpHook.csproj", "{7870BDE7-4751-49B8-ABA5-A2F894199FB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37503561-22C4-4BD3-A004-499800FF0FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37503561-22C4-4BD3-A004-499800FF0FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37503561-22C4-4BD3-A004-499800FF0FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37503561-22C4-4BD3-A004-499800FF0FA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7870BDE7-4751-49B8-ABA5-A2F894199FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7870BDE7-4751-49B8-ABA5-A2F894199FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7870BDE7-4751-49B8-ABA5-A2F894199FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7870BDE7-4751-49B8-ABA5-A2F894199FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
