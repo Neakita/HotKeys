@@ -8,14 +8,14 @@ public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 {
 	private static readonly ImmutableDictionary<KeyCode, KeyModifiers> KeyModifiers =
 		ImmutableDictionary.CreateRange<KeyCode, KeyModifiers>([
-			new(KeyCode.VcLeftAlt, SharpHook.KeyModifiers.Alt),
-			new(KeyCode.VcRightAlt, SharpHook.KeyModifiers.Alt),
-			new(KeyCode.VcLeftControl, SharpHook.KeyModifiers.Control),
-			new(KeyCode.VcRightControl, SharpHook.KeyModifiers.Control),
-			new(KeyCode.VcLeftShift, SharpHook.KeyModifiers.Shift),
-			new(KeyCode.VcRightShift, SharpHook.KeyModifiers.Shift),
-			new(KeyCode.VcLeftMeta, SharpHook.KeyModifiers.Meta),
-			new(KeyCode.VcRightMeta, SharpHook.KeyModifiers.Meta)
+			new(KeyCode.VcLeftAlt, SharpHook.KeyModifiers.LeftAlt),
+			new(KeyCode.VcRightAlt, SharpHook.KeyModifiers.RightAlt),
+			new(KeyCode.VcLeftControl, SharpHook.KeyModifiers.LeftControl),
+			new(KeyCode.VcRightControl, SharpHook.KeyModifiers.RightControl),
+			new(KeyCode.VcLeftShift, SharpHook.KeyModifiers.LeftShift),
+			new(KeyCode.VcRightShift, SharpHook.KeyModifiers.RightShift),
+			new(KeyCode.VcLeftMeta, SharpHook.KeyModifiers.LeftMeta),
+			new(KeyCode.VcRightMeta, SharpHook.KeyModifiers.RightMeta),
 		]);
 
 	public IObservable<KeyModifiers> KeyPressed => _keyCodeManager.KeyPressed.Where(IsModifier).Select(AsModifier);
