@@ -18,8 +18,8 @@ public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 			new(KeyCode.VcRightMeta, SharpHook.KeyModifiers.RightMeta),
 		]);
 
-	public IObservable<KeyModifiers> KeyPressed => _keyCodeManager.KeyPressed.Where(IsModifier).Select(AsModifier);
-	public IObservable<KeyModifiers> KeyReleased => _keyCodeManager.KeyReleased.Where(IsModifier).Select(AsModifier);
+	public IObservable<KeyModifiers> KeyPressed => _keyCodeManager.KeyPressed.Select(AsModifier).Where(IsNotNone);
+	public IObservable<KeyModifiers> KeyReleased => _keyCodeManager.KeyReleased.Select(AsModifier).Where(IsNotNone);
 
 	public SharpHookKeyModifiersManager(KeyManager<KeyCode> keyCodeManager)
 	{
@@ -30,8 +30,8 @@ public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 
 	private readonly KeyManager<KeyCode> _keyCodeManager;
 	
-	private static KeyModifiers AsModifier(KeyCode key)
-	{
-		return KeyModifiers[key];
-	}
+	private static KeyModifiers AsModifier(KeyCode key) =>
+		CollectionExtensions.GetValueOrDefault(KeyModifiers, key, SharpHook.KeyModifiers.None);
+
+	private static bool IsNotNone(KeyModifiers modifiers) => modifiers != SharpHook.KeyModifiers.None;
 }
