@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Reactive.Linq;
 using SharpHook.Native;
 
@@ -6,7 +7,7 @@ namespace Katter.HotKeys.SharpHook;
 
 public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 {
-	private static readonly ImmutableDictionary<KeyCode, KeyModifiers> KeyModifiers =
+	private static readonly FrozenDictionary<KeyCode, KeyModifiers> KeyModifiers =
 		ImmutableDictionary.CreateRange<KeyCode, KeyModifiers>([
 			new(KeyCode.VcLeftAlt, SharpHook.KeyModifiers.LeftAlt),
 			new(KeyCode.VcRightAlt, SharpHook.KeyModifiers.RightAlt),
@@ -16,7 +17,7 @@ public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 			new(KeyCode.VcRightShift, SharpHook.KeyModifiers.RightShift),
 			new(KeyCode.VcLeftMeta, SharpHook.KeyModifiers.LeftMeta),
 			new(KeyCode.VcRightMeta, SharpHook.KeyModifiers.RightMeta),
-		]);
+		]).ToFrozenDictionary();
 
 	public IObservable<KeyModifiers> KeyPressed => _keyCodeManager.KeyPressed.Select(AsModifier).Where(IsNotNone);
 	public IObservable<KeyModifiers> KeyReleased => _keyCodeManager.KeyReleased.Select(AsModifier).Where(IsNotNone);
