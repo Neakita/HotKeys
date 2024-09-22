@@ -12,9 +12,8 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 		set
 		{
 			Guard.IsFalse(IsDisposed);
-			var oldValue = _behavior;
+			BehaviorChangedEventArgs<TGesture> args = new(this, _behavior, value);
 			_behavior = value;
-			BehaviorChangedEventArgs<TGesture> args = new(this, oldValue, value);
 			_behaviorChanged.OnNext(args);
 		}
 	}
@@ -25,9 +24,8 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 		set
 		{
 			Guard.IsFalse(IsDisposed);
-			var oldValue = _gesture;
+			GestureChangedEventArgs<TGesture> args = new(this, _gesture, value);
 			_gesture = value;
-			GestureChangedEventArgs<TGesture> args = new(this, oldValue, value);
 			_gestureChanged.OnNext(args);
 		}
 	}
