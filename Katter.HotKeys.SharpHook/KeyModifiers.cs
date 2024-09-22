@@ -15,5 +15,6 @@ public enum KeyModifiers : byte
 	Alt = LeftAlt | RightAlt,
 	Control = LeftControl | RightControl,
 	Shift = LeftShift | RightShift,
-	Meta = LeftMeta | RightMeta
+	Meta = LeftMeta | RightMeta,
+	All = Alt | Control | Shift | Meta
 }
