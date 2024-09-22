@@ -7,7 +7,7 @@ using SharpHook.Reactive;
 
 namespace Katter.HotKeys.SharpHook;
 
-public class SharpHookKeyboardKeyManager : KeyManager<KeyCode>
+public class SharpHookKeyboardKeyManager : KeyManager<KeyCode>, IDisposable
 {
 	public IObservable<KeyCode> KeyPressed => _keyPressed.AsObservable();
 	public IObservable<KeyCode> KeyReleased => _keyReleased.AsObservable();
@@ -24,6 +24,13 @@ public class SharpHookKeyboardKeyManager : KeyManager<KeyCode>
 			.Where(_pressedKeys.Remove)
 			.Subscribe(_keyReleased)
 			.DisposeWith(_disposable);
+	}
+
+	public void Dispose()
+	{
+		_disposable.Dispose();
+		_keyPressed.Dispose();
+		_keyReleased.Dispose();
 	}
 
 	private readonly CompositeDisposable _disposable = new();
