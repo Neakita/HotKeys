@@ -49,15 +49,15 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : class
 			_bindings.Remove(disposedBinding.Gesture);
 	}
 
-	private void OnBindingGestureChanged((HotKeyBinding<TGesture> sender, TGesture? oldGesture, TGesture? newGesture) t)
+	private void OnBindingGestureChanged(GestureChangedEventArgs<TGesture> args)
 	{
-		if (t.oldGesture != null)
+		if (args.OldGesture != null)
 		{
-			bool isRemoved = _bindings[t.oldGesture].Remove(t.sender);
+			bool isRemoved = _bindings[args.OldGesture].Remove(args.Sender);
 			Guard.IsTrue(isRemoved);
 		}
-		if (t.newGesture != null)
-			GetOrCreateGesturesList(t.newGesture).Add(t.sender);
+		if (args.NewGesture != null)
+			GetOrCreateGesturesList(args.NewGesture).Add(args.Sender);
 	}
 
 	private List<HotKeyBinding<TGesture>> GetOrCreateGesturesList(TGesture gesture)

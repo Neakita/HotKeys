@@ -16,7 +16,8 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 			Guard.IsFalse(IsDisposed);
 			var oldValue = _behaviour;
 			_behaviour = value;
-			_behaviourChanged.OnNext((this, oldValue, value));
+			BehaviorChangedEventArgs<TGesture> args = new(this, oldValue, value);
+			_behaviourChanged.OnNext(args);
 		}
 	}
 
@@ -28,7 +29,8 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 			Guard.IsFalse(IsDisposed);
 			var oldValue = _gesture;
 			_gesture = value;
-			_gestureChanged.OnNext((this, oldValue, value));
+			GestureChangedEventArgs<TGesture> args = new(this, oldValue, value);
+			_gestureChanged.OnNext(args);
 		}
 	}
 
@@ -48,8 +50,8 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 		_disposed.Dispose();
 	}
 
-	internal IObservable<(HotKeyBinding<TGesture> sender, BindingBehaviour oldBehaviour, BindingBehaviour newBehaviour)> BehaviourChanged => _behaviourChanged;
-	internal IObservable<(HotKeyBinding<TGesture> sender, TGesture? oldGesture, TGesture? newGesture)> GestureChanged => _gestureChanged;
+	internal IObservable<BehaviorChangedEventArgs<TGesture>> BehaviourChanged => _behaviourChanged;
+	internal IObservable<GestureChangedEventArgs<TGesture>> GestureChanged => _gestureChanged;
 	internal IObservable<HotKeyBinding<TGesture>> Disposed => _disposed;
 
 	internal HotKeyBinding(string name, BindingBehaviour behaviour, TGesture? gesture = null)
@@ -62,8 +64,8 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 	internal void OnPressed() => Behaviour.OnPressed();
 	internal void OnReleased() => Behaviour.OnReleased();
 
-	private readonly Subject<(HotKeyBinding<TGesture>, TGesture?, TGesture?)> _gestureChanged = new();
-	private readonly Subject<(HotKeyBinding<TGesture>, BindingBehaviour, BindingBehaviour)> _behaviourChanged = new();
+	private readonly Subject<BehaviorChangedEventArgs<TGesture>> _behaviourChanged = new();
+	private readonly Subject<GestureChangedEventArgs<TGesture>> _gestureChanged = new();
 	private readonly Subject<HotKeyBinding<TGesture>> _disposed = new();
 	private TGesture? _gesture;
 	private BindingBehaviour _behaviour;
