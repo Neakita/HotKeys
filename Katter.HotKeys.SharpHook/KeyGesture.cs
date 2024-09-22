@@ -1,16 +1,17 @@
-﻿using System.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 using SharpHook.Native;
 
 namespace Katter.HotKeys.SharpHook;
 
 public record KeyGesture(KeyCode Key, KeyModifiers Modifiers)
 {
+	private const string KeyCodePrefix = "Vc";
+
 	public override string ToString()
 	{
 		var key = Key.ToString();
-		if (key[..2] == "Vc")
-			key = key[2..];
-		else Debug.WriteLine($"{Key} expected to begin with \"Vc\" prefix");
+		Guard.IsTrue(key.StartsWith(KeyCodePrefix));
+		key = key[KeyCodePrefix.Length..];
 		if (Modifiers == KeyModifiers.None)
 			return key;
 		var modifiers = Modifiers.ToString();
