@@ -12,9 +12,9 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : class
 		gestureManager.GestureReleased.Subscribe(OnReleased);
 	}
 
-	public HotKeyBinding<TGesture> CreateBinding(string name, BindingBehaviour behaviour, TGesture? gesture = null)
+	public HotKeyBinding<TGesture> CreateBinding(BindingBehaviour behaviour, TGesture? gesture = null)
 	{
-		HotKeyBinding<TGesture> binding = new(name, behaviour, gesture);
+		HotKeyBinding<TGesture> binding = new(behaviour, gesture);
 		if (gesture != null)
 			GetOrCreateGesturesList(gesture).Add(binding);
 		binding.GestureChanged.Subscribe(OnBindingGestureChanged);

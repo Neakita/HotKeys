@@ -24,6 +24,6 @@ ActionHoldBindingBehaviour holdBehaviour = new(token =>
 	Console.Clear();
 	Console.WriteLine($"Hold {gesture} for {DateTime.UtcNow - start}!");
 });
-hotKeyBindingsManager.CreateBinding("Tap", tapBehaviour, gesture);
-hotKeyBindingsManager.CreateBinding("Hold", holdBehaviour, gesture);
+hotKeyBindingsManager.CreateBinding(tapBehaviour, gesture);
+hotKeyBindingsManager.CreateBinding(holdBehaviour, gesture);
 hook.Run();

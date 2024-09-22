@@ -6,8 +6,6 @@ namespace Katter.HotKeys;
 
 public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 {
-	public string Name { get; }
-
 	public BindingBehaviour Behaviour
 	{
 		get => _behaviour;
@@ -54,10 +52,9 @@ public sealed class HotKeyBinding<TGesture> : IDisposable where TGesture : class
 	internal IObservable<GestureChangedEventArgs<TGesture>> GestureChanged => _gestureChanged;
 	internal IObservable<HotKeyBinding<TGesture>> Disposed => _disposed;
 
-	internal HotKeyBinding(string name, BindingBehaviour behaviour, TGesture? gesture = null)
+	internal HotKeyBinding(BindingBehaviour behaviour, TGesture? gesture = null)
 	{
 		_behaviour = behaviour;
-		Name = name;
 		Gesture = gesture;
 	}
 
