@@ -9,14 +9,14 @@ public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 {
 	private static readonly FrozenDictionary<KeyCode, KeyModifiers> KeyModifiers =
 		ImmutableDictionary.CreateRange<KeyCode, KeyModifiers>([
-			new(KeyCode.VcLeftAlt, SharpHook.KeyModifiers.LeftAlt),
-			new(KeyCode.VcRightAlt, SharpHook.KeyModifiers.RightAlt),
-			new(KeyCode.VcLeftControl, SharpHook.KeyModifiers.LeftControl),
-			new(KeyCode.VcRightControl, SharpHook.KeyModifiers.RightControl),
-			new(KeyCode.VcLeftShift, SharpHook.KeyModifiers.LeftShift),
-			new(KeyCode.VcRightShift, SharpHook.KeyModifiers.RightShift),
-			new(KeyCode.VcLeftMeta, SharpHook.KeyModifiers.LeftMeta),
-			new(KeyCode.VcRightMeta, SharpHook.KeyModifiers.RightMeta),
+			new(KeyCode.VcLeftAlt, HotKeys.KeyModifiers.LeftAlt),
+			new(KeyCode.VcRightAlt, HotKeys.KeyModifiers.RightAlt),
+			new(KeyCode.VcLeftControl, HotKeys.KeyModifiers.LeftControl),
+			new(KeyCode.VcRightControl, HotKeys.KeyModifiers.RightControl),
+			new(KeyCode.VcLeftShift, HotKeys.KeyModifiers.LeftShift),
+			new(KeyCode.VcRightShift, HotKeys.KeyModifiers.RightShift),
+			new(KeyCode.VcLeftMeta, HotKeys.KeyModifiers.LeftMeta),
+			new(KeyCode.VcRightMeta, HotKeys.KeyModifiers.RightMeta),
 		]).ToFrozenDictionary();
 
 	public IObservable<KeyModifiers> KeyPressed => _keyCodeManager.KeyPressed.Select(AsModifier).Where(IsNotNone);
@@ -32,7 +32,7 @@ public sealed class SharpHookKeyModifiersManager : KeyManager<KeyModifiers>
 	private readonly KeyManager<KeyCode> _keyCodeManager;
 	
 	private static KeyModifiers AsModifier(KeyCode key) =>
-		CollectionExtensions.GetValueOrDefault(KeyModifiers, key, SharpHook.KeyModifiers.None);
+		CollectionExtensions.GetValueOrDefault(KeyModifiers, key, HotKeys.KeyModifiers.None);
 
-	private static bool IsNotNone(KeyModifiers modifiers) => modifiers != SharpHook.KeyModifiers.None;
+	private static bool IsNotNone(KeyModifiers modifiers) => modifiers != HotKeys.KeyModifiers.None;
 }

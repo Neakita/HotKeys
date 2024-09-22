@@ -1,4 +1,4 @@
-﻿namespace Katter.HotKeys.SharpHook;
+﻿namespace Katter.HotKeys;
 
 [Flags]
 public enum KeyModifiers : byte
