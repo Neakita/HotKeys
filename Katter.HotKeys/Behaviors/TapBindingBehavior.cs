@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Diagnostics;
 
-namespace Katter.HotKeys.Behaviours;
+namespace Katter.HotKeys.Behaviors;
 
-public abstract class TapBindingBehaviour : BindingBehaviour
+public abstract class TapBindingBehavior : BindingBehavior
 {
 	public TimeSpan MaximumInterval { get; set; } = TimeSpan.FromMilliseconds(125);
 

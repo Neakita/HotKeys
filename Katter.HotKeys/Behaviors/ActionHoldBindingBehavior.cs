@@ -1,13 +1,13 @@
-﻿namespace Katter.HotKeys.Behaviours;
+﻿namespace Katter.HotKeys.Behaviors;
 
-public sealed class ActionHoldBindingBehaviour : HoldBindingBehaviour
+public sealed class ActionHoldBindingBehavior : HoldBindingBehavior
 {
-	public ActionHoldBindingBehaviour(Action<CancellationToken> action)
+	public ActionHoldBindingBehavior(Action<CancellationToken> action)
 	{
 		_action = action;
 	}
 
-	public ActionHoldBindingBehaviour(Action action)
+	public ActionHoldBindingBehavior(Action action)
 	{
 		_action = cancellationToken =>
 		{

@@ -1,6 +1,6 @@
-﻿namespace Katter.HotKeys.Behaviours;
+﻿namespace Katter.HotKeys.Behaviors;
 
-public abstract class ReleaseBindingBehaviour : BindingBehaviour
+public abstract class ReleaseBindingBehavior : BindingBehavior
 {
 	protected internal sealed override void OnPressed()
 	{

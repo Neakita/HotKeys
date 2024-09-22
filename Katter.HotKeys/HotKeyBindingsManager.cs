@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using CommunityToolkit.Diagnostics;
-using Katter.HotKeys.Behaviours;
+using Katter.HotKeys.Behaviors;
 
 namespace Katter.HotKeys;
 
@@ -12,9 +12,9 @@ public sealed class HotKeyBindingsManager<TGesture> where TGesture : class
 		gestureManager.GestureReleased.Subscribe(OnReleased);
 	}
 
-	public HotKeyBinding<TGesture> CreateBinding(BindingBehaviour behaviour, TGesture? gesture = null)
+	public HotKeyBinding<TGesture> CreateBinding(BindingBehavior behavior, TGesture? gesture = null)
 	{
-		HotKeyBinding<TGesture> binding = new(behaviour, gesture);
+		HotKeyBinding<TGesture> binding = new(behavior, gesture);
 		if (gesture != null)
 			GetOrCreateGesturesList(gesture).Add(binding);
 		binding.GestureChanged.Subscribe(OnBindingGestureChanged);

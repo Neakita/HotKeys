@@ -1,22 +1,14 @@
 ﻿using CommunityToolkit.Diagnostics;
 
-namespace Katter.HotKeys.Behaviours;
+namespace Katter.HotKeys.Behaviors;
 
-public abstract class LongHoldBindingBehaviour : BindingBehaviour
+public abstract class HoldBindingBehavior : BindingBehavior
 {
-	public TimeSpan Delay { get; set; } = TimeSpan.FromMilliseconds(500);
-
 	protected internal sealed override void OnPressed()
 	{
 		Guard.IsNull(_cancellationTokenSource);
-		CancellationTokenSource cancellationTokenSource = new();
-		_cancellationTokenSource = cancellationTokenSource;
-		Task.Run(() =>
-		{
-			Thread.Sleep(Delay);
-			if (!cancellationTokenSource.IsCancellationRequested)
-				OnHold(cancellationTokenSource.Token);
-		});
+		_cancellationTokenSource = new CancellationTokenSource();
+		Task.Run(() => OnHold(_cancellationTokenSource.Token));
 	}
 
 	protected internal sealed override void OnReleased()

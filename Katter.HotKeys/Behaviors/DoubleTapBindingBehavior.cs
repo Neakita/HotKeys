@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Diagnostics;
 
-namespace Katter.HotKeys.Behaviours;
+namespace Katter.HotKeys.Behaviors;
 
-public abstract class DoubleTapBindingBehaviour : BindingBehaviour
+public abstract class DoubleTapBindingBehavior : BindingBehavior
 {
 	public TimeSpan MaximumPressAndReleaseInterval { get; set; } = TimeSpan.FromMilliseconds(125);
 

@@ -1,5 +1,5 @@
 ﻿using Katter.HotKeys;
-using Katter.HotKeys.Behaviours;
+using Katter.HotKeys.Behaviors;
 using Katter.HotKeys.SharpHook;
 using SharpHook;
 using SharpHook.Native;
@@ -11,8 +11,8 @@ SharpHookKeyModifiersManager modifiersManager = new(keyManager);
 SharpHookKeyGestureManager keyGestureManager = new(modifiersManager, keyManager);
 HotKeyBindingsManager<KeyGesture> hotKeyBindingsManager = new(keyGestureManager);
 KeyGesture gesture = new(KeyCode.VcQ, KeyModifiers.Control | KeyModifiers.Shift);
-ActionTapBindingBehaviour tapBehaviour = new(() => Console.WriteLine($"Tapped {gesture}!"));
-ActionHoldBindingBehaviour holdBehaviour = new(token =>
+ActionTapBindingBehavior tapBehavior = new(() => Console.WriteLine($"Tapped {gesture}!"));
+ActionHoldBindingBehavior holdBehavior = new(token =>
 {
 	var start = DateTime.UtcNow;
 	while (!token.IsCancellationRequested)
@@ -24,6 +24,6 @@ ActionHoldBindingBehaviour holdBehaviour = new(token =>
 	Console.Clear();
 	Console.WriteLine($"Hold {gesture} for {DateTime.UtcNow - start}!");
 });
-hotKeyBindingsManager.CreateBinding(tapBehaviour, gesture);
-hotKeyBindingsManager.CreateBinding(holdBehaviour, gesture);
+hotKeyBindingsManager.CreateBinding(tapBehavior, gesture);
+hotKeyBindingsManager.CreateBinding(holdBehavior, gesture);
 hook.Run();
