@@ -1,4 +1,4 @@
-﻿using Katter.HotKeys.SharpHook;
+﻿using HotKeys.SharpHook;
 using SharpHook.Reactive;
 
 SimpleReactiveGlobalHook hook = new();

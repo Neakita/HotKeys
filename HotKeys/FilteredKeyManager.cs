@@ -2,7 +2,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace Katter.HotKeys;
+namespace HotKeys;
 
 public abstract class FilteredKeyManager<TKey> : KeyManager<TKey>, IDisposable
 {

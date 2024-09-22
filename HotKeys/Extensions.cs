@@ -1,6 +1,6 @@
 ﻿using System.Reactive.Disposables;
 
-namespace Katter.HotKeys.SharpHook;
+namespace HotKeys;
 
 internal static class Extensions
 {

@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katter.HotKeys", "Katter.HotKeys\Katter.HotKeys.csproj", "{37503561-22C4-4BD3-A004-499800FF0FA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotKeys", "HotKeys\HotKeys.csproj", "{37503561-22C4-4BD3-A004-499800FF0FA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katter.HotKeys.SharpHook", "Katter.HotKeys.SharpHook\Katter.HotKeys.SharpHook.csproj", "{7870BDE7-4751-49B8-ABA5-A2F894199FB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotKeys.SharpHook", "HotKeys.SharpHook\HotKeys.SharpHook.csproj", "{7870BDE7-4751-49B8-ABA5-A2F894199FB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katter.HotKeys.ConsoleSample", "Katter.HotKeys.ConsoleSample\Katter.HotKeys.ConsoleSample.csproj", "{018C4976-106C-4357-9949-F2BDBE2EEC0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotKeys.ConsoleSample", "HotKeys.ConsoleSample\HotKeys.ConsoleSample.csproj", "{018C4976-106C-4357-9949-F2BDBE2EEC0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

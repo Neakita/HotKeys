@@ -1,4 +1,4 @@
-﻿namespace Katter.HotKeys;
+﻿namespace HotKeys;
 
 public interface KeyManager<T>
 {

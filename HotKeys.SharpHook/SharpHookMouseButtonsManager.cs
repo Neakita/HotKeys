@@ -3,7 +3,7 @@ using SharpHook;
 using SharpHook.Native;
 using SharpHook.Reactive;
 
-namespace Katter.HotKeys.SharpHook;
+namespace HotKeys.SharpHook;
 
 public sealed class SharpHookMouseButtonsManager : KeyManager<MouseButton>
 {
