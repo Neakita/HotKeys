@@ -5,10 +5,17 @@ using SharpHook.Reactive;
 
 namespace HotKeys.SharpHook;
 
-public class SharpHookKeyboardKeyManager : KeyManager<KeyCode>
+public class SharpHookKeyboardKeyManager : KeyManager<FormattedSharpHookKeyCode>
 {
-	public IObservable<KeyCode> KeyPressed => _hook.KeyPressed.Select(TransformArgs);
-	public IObservable<KeyCode> KeyReleased => _hook.KeyReleased.Select(TransformArgs);
+	public IObservable<FormattedSharpHookKeyCode> KeyPressed =>
+		_hook.KeyPressed
+			.Select(TransformArgs)
+			.Select(TransformToFormatted);
+
+	public IObservable<FormattedSharpHookKeyCode> KeyReleased =>
+		_hook.KeyReleased
+			.Select(TransformArgs)
+			.Select(TransformToFormatted);
 
 	public SharpHookKeyboardKeyManager(IReactiveGlobalHook hook)
 	{
@@ -20,5 +27,10 @@ public class SharpHookKeyboardKeyManager : KeyManager<KeyCode>
 	private static KeyCode TransformArgs(KeyboardHookEventArgs args)
 	{
 		return args.Data.KeyCode;
+	}
+
+	private static FormattedSharpHookKeyCode TransformToFormatted(KeyCode keyCode)
+	{
+		return new FormattedSharpHookKeyCode(keyCode);
 	}
 }
