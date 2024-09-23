@@ -4,7 +4,7 @@ using System.Reactive.Subjects;
 
 namespace HotKeys;
 
-public abstract class FilteredKeyManager<TKey> : KeyManager<TKey>, IDisposable
+public abstract class FilteredKeyManager<TKey> : KeyManager<TKey>, IDisposable where TKey : notnull
 {
 	public IObservable<TKey> KeyPressed => _keyPressed.AsObservable();
 	public IObservable<TKey> KeyReleased => _keyReleased.AsObservable();

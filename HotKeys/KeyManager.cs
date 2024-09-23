@@ -1,7 +1,7 @@
 ﻿namespace HotKeys;
 
-public interface KeyManager<out T>
+public interface KeyManager
 {
-	public IObservable<T> KeyPressed { get; }
-	public IObservable<T> KeyReleased { get; }
+	IObservable<object> KeyPressed { get; }
+	IObservable<object> KeyReleased { get; }
 }
