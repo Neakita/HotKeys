@@ -1,4 +1,4 @@
-namespace HotKeys;
+namespace HotKeys.Gestures;
 
 public abstract class Gesture
 {

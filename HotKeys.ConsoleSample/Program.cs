@@ -1,4 +1,5 @@
 ﻿using HotKeys;
+using HotKeys.Gestures;
 using HotKeys.SharpHook;
 using SharpHook.Reactive;
 

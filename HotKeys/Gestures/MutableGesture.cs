@@ -1,4 +1,4 @@
-namespace HotKeys;
+namespace HotKeys.Gestures;
 
 internal sealed class MutableGesture : Gesture
 {

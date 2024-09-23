@@ -2,7 +2,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CommunityToolkit.Diagnostics;
 
-namespace HotKeys;
+namespace HotKeys.Gestures;
 
 public sealed class GestureManager : IDisposable
 {
