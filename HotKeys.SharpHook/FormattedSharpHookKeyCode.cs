@@ -4,7 +4,8 @@ using SharpHook.Native;
 
 namespace HotKeys.SharpHook;
 
-public readonly struct FormattedSharpHookKeyCode : IEquatable<FormattedSharpHookKeyCode>,
+public readonly struct FormattedSharpHookKeyCode :
+	IEquatable<FormattedSharpHookKeyCode>,
 	IComparable<FormattedSharpHookKeyCode>
 {
 	private static readonly ImmutableHashSet<KeyCode> Modifiers =
