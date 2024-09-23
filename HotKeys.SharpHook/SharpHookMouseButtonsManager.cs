@@ -37,6 +37,6 @@ public sealed class SharpHookMouseButtonsManager : KeyManager<FormattedSharpHook
 
 	private static FormattedSharpHookMouseButton TransformToFormatted(MouseButton button)
 	{
-		return (FormattedSharpHookMouseButton)button;
+		return new FormattedSharpHookMouseButton(button);
 	}
 }

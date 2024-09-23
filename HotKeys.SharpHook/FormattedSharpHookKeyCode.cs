@@ -1,25 +1,10 @@
-using System.Collections.Immutable;
 using CommunityToolkit.Diagnostics;
 using SharpHook.Native;
 
 namespace HotKeys.SharpHook;
 
-public readonly struct FormattedSharpHookKeyCode :
-	IEquatable<FormattedSharpHookKeyCode>,
-	IComparable<FormattedSharpHookKeyCode>
+public readonly struct FormattedSharpHookKeyCode : IEquatable<FormattedSharpHookKeyCode>, IComparable
 {
-	private static readonly ImmutableHashSet<KeyCode> Modifiers =
-	[
-		KeyCode.VcLeftShift,
-		KeyCode.VcRightShift,
-		KeyCode.VcLeftAlt,
-		KeyCode.VcRightAlt,
-		KeyCode.VcLeftControl,
-		KeyCode.VcRightControl,
-		KeyCode.VcLeftMeta,
-		KeyCode.VcRightMeta
-	];
-
 	public static implicit operator FormattedSharpHookKeyCode(KeyCode keyCode)
 	{
 		return new FormattedSharpHookKeyCode(keyCode);
@@ -52,6 +37,12 @@ public readonly struct FormattedSharpHookKeyCode :
 		return KeyCode == other.KeyCode;
 	}
 
+	public int CompareTo(object? other)
+	{
+		Guard.IsNotNull(other);
+		return SharpHookComparingHelper.Compare(this, other);
+	}
+
 	public override bool Equals(object? obj)
 	{
 		return obj is FormattedSharpHookKeyCode other && Equals(other);
@@ -68,20 +59,5 @@ public readonly struct FormattedSharpHookKeyCode :
 		var keyCodeName = KeyCode.ToString();
 		Guard.IsTrue(keyCodeName.StartsWith(keyCodePrefix));
 		return keyCodeName[keyCodePrefix.Length..];
-	}
-
-	public int CompareTo(FormattedSharpHookKeyCode other)
-	{
-		var thisKeyCodePriority = GetKeyPriority(KeyCode);
-		var otherKeyCodePriority = GetKeyPriority(other.KeyCode);
-		return thisKeyCodePriority.CompareTo(otherKeyCodePriority);
-	}
-
-	private static uint GetKeyPriority(KeyCode keyCode)
-	{
-		bool isModifier = Modifiers.Contains(keyCode);
-		if (isModifier)
-			return (uint)keyCode;
-		return (uint)keyCode + ushort.MaxValue;
 	}
 }
