@@ -1,10 +1,11 @@
 ﻿using HotKeys;
 using HotKeys.Gestures;
 using HotKeys.SharpHook;
+using SharpHook.Native;
 using SharpHook.Reactive;
 
 SimpleReactiveGlobalHook hook = new();
-SharpHookKeyboardKeyManager keyManager = new(hook);
+KeyManagerFilter<KeyCode> keyManager = new(new SharpHookKeyboardKeyManager(hook));
 keyManager.KeyPressed.Subscribe(key => Console.WriteLine($"[KeyManager] Pressed {key}"));
 keyManager.KeyReleased.Subscribe(key => Console.WriteLine($"[KeyManager] Released {key}"));
 SharpHookMouseButtonsManager mouseButtonsManager = new(hook);
