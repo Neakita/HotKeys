@@ -15,6 +15,16 @@ public readonly struct FormattedSharpHookMouseButton : IEquatable<FormattedSharp
 		return formatted.Button;
 	}
 
+	public static bool operator ==(FormattedSharpHookMouseButton left, FormattedSharpHookMouseButton right)
+	{
+		return left.Equals(right);
+	}
+
+	public static bool operator !=(FormattedSharpHookMouseButton left, FormattedSharpHookMouseButton right)
+	{
+		return !(left == right);
+	}
+
 	public MouseButton Button { get; }
 
 	public FormattedSharpHookMouseButton(MouseButton button)
