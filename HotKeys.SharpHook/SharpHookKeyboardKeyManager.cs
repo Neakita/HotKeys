@@ -5,13 +5,17 @@ using SharpHook.Reactive;
 
 namespace HotKeys.SharpHook;
 
-public class SharpHookKeyboardKeyManager : FilteredKeyManager<KeyCode>
+public class SharpHookKeyboardKeyManager : KeyManager<KeyCode>
 {
-	public SharpHookKeyboardKeyManager(IReactiveGlobalHook hook) : base(
-		hook.KeyPressed.Select(TransformArgs),
-		hook.KeyReleased.Select(TransformArgs))
+	public IObservable<KeyCode> KeyPressed => _hook.KeyPressed.Select(TransformArgs);
+	public IObservable<KeyCode> KeyReleased => _hook.KeyReleased.Select(TransformArgs);
+
+	public SharpHookKeyboardKeyManager(IReactiveGlobalHook hook)
 	{
+		_hook = hook;
 	}
+
+	private readonly IReactiveGlobalHook _hook;
 
 	private static KeyCode TransformArgs(KeyboardHookEventArgs args)
 	{

@@ -8,8 +8,8 @@ public sealed class AggregateKeyManagerTests
 	[Fact]
 	public void ShouldMergeAllEvents()
 	{
-		using ControlledKeyManager firstKeyManager = new();
-		using ControlledKeyManager secondKeyManager = new();
+		using ControlledKeyManager<char> firstKeyManager = new();
+		using ControlledKeyManager<char> secondKeyManager = new();
 		AggregateKeyManager aggregateKeyManager = new([firstKeyManager, secondKeyManager]);
 		HashSet<object> pressedKeys = new();
 		aggregateKeyManager.KeyPressed.Subscribe(key => Guard.IsTrue(pressedKeys.Add(key)));

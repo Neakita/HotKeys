@@ -8,7 +8,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void CurrentGestureChangedShouldBeObservedOnce()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		int changesCount = 0;
 		using var subscription = gestureManager.CurrentGestureChanged.Subscribe(_ => changesCount++);
@@ -19,7 +19,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void GestureShouldHaveSingleProvidedKey()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		Gesture? observedGesture = null;
 		using var subscription = gestureManager.CurrentGestureChanged.Subscribe(gesture => observedGesture = gesture);
@@ -31,7 +31,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void GestureShouldBeEmptyWhenReleasingKey()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		Gesture? observedGesture = null;
 		using var subscription = gestureManager.CurrentGestureChanged.Subscribe(gesture => observedGesture = gesture);
@@ -44,7 +44,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void CurrentGestureChangedShouldBeObservedTwiceWhenReleasing()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		int changesCount = 0;
 		using var subscription = gestureManager.CurrentGestureChanged.Subscribe(_ => changesCount++);
@@ -56,7 +56,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void ShouldThrowWhenTryingToReleaseNotPressedKey()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		Assert.ThrowsAny<Exception>(() => keyManager.NotifyReleased('D'));
 	}
@@ -64,7 +64,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void ShouldThrowWhenTryingToPressSameKeyTwice()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		keyManager.NotifyPressed('D');
 		Assert.ThrowsAny<Exception>(() => keyManager.NotifyPressed('D'));
@@ -73,7 +73,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void ShouldHaveTwoKeysPressed()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		Gesture? observedGesture = null;
 		using var subscription = gestureManager.CurrentGestureChanged.Subscribe(gesture => observedGesture = gesture);
@@ -86,7 +86,7 @@ public sealed class GestureManagerTests
 	[Fact]
 	public void KeyShouldBePressedWhenOtherKeyIsReleased()
 	{
-		using ControlledKeyManager keyManager = new();
+		using ControlledKeyManager<char> keyManager = new();
 		using GestureManager gestureManager = new(keyManager);
 		Gesture? observedGesture = null;
 		using var subscription = gestureManager.CurrentGestureChanged.Subscribe(gesture => observedGesture = gesture);

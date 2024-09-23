@@ -2,17 +2,17 @@ using System.Reactive.Subjects;
 
 namespace HotKeys.Tests;
 
-internal sealed class ControlledKeyManager : KeyManager, IDisposable
+internal sealed class ControlledKeyManager<T> : KeyManager<T>, IDisposable where T : notnull
 {
-	public IObservable<object> KeyPressed => _keyPressed;
-	public IObservable<object> KeyReleased => _keyReleased;
+	public IObservable<T> KeyPressed => _keyPressed;
+	public IObservable<T> KeyReleased => _keyReleased;
 
-	public void NotifyPressed(object key)
+	public void NotifyPressed(T key)
 	{
 		_keyPressed.OnNext(key);
 	}
 
-	public void NotifyReleased(object key)
+	public void NotifyReleased(T key)
 	{
 		_keyReleased.OnNext(key);
 	}
@@ -23,6 +23,6 @@ internal sealed class ControlledKeyManager : KeyManager, IDisposable
 		_keyReleased.Dispose();
 	}
 
-	private readonly Subject<object> _keyPressed = new();
-	private readonly Subject<object> _keyReleased = new();
+	private readonly Subject<T> _keyPressed = new();
+	private readonly Subject<T> _keyReleased = new();
 }

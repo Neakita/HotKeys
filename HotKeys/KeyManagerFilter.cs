@@ -4,28 +4,28 @@ using System.Reactive.Subjects;
 
 namespace HotKeys;
 
-public abstract class FilteredKeyManager<TKey> : KeyManager<TKey>, IDisposable where TKey : notnull
+public sealed class KeyManagerFilter<TKey> : KeyManager<TKey>, IDisposable where TKey : notnull
 {
 	public IObservable<TKey> KeyPressed => _keyPressed.AsObservable();
 	public IObservable<TKey> KeyReleased => _keyReleased.AsObservable();
+
+	public KeyManagerFilter(KeyManager<TKey> keyManager)
+	{
+		keyManager.KeyPressed
+			.Where(_pressedKeys.Add)
+			.Subscribe(_keyPressed)
+			.DisposeWith(_disposable);
+		keyManager.KeyReleased
+			.Where(_pressedKeys.Remove)
+			.Subscribe(_keyReleased)
+			.DisposeWith(_disposable);
+	}
 
 	public void Dispose()
 	{
 		_disposable.Dispose();
 		_keyPressed.Dispose();
 		_keyReleased.Dispose();
-	}
-
-	protected FilteredKeyManager(IObservable<TKey> keyPressed, IObservable<TKey> keyReleased)
-	{
-		keyPressed
-			.Where(_pressedKeys.Add)
-			.Subscribe(_keyPressed)
-			.DisposeWith(_disposable);
-		keyReleased
-			.Where(_pressedKeys.Remove)
-			.Subscribe(_keyReleased)
-			.DisposeWith(_disposable);
 	}
 
 	private readonly CompositeDisposable _disposable = new();
