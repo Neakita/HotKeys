@@ -20,17 +20,21 @@ public sealed class GestureManager : IDisposable
 	}
 
 	private readonly Subject<Gesture> _currentGestureChanged = new();
-	private readonly MutableGesture _gesture = new();
+	private Gesture _gesture = Gesture.Empty;
 
 	private void AddToGesture(object key)
 	{
-		Guard.IsTrue(_gesture.Keys.Add(key));
+		var builder = _gesture.Keys.ToBuilder();
+		Guard.IsTrue(builder.Add(key));
+		_gesture = new Gesture(builder.ToImmutable());
 		_currentGestureChanged.OnNext(_gesture);
 	}
 
 	private void RemoveFromGesture(object key)
 	{
-		Guard.IsTrue(_gesture.Keys.Remove(key));
+		var builder = _gesture.Keys.ToBuilder();
+		Guard.IsTrue(builder.Remove(key));
+		_gesture = new Gesture(builder.ToImmutable());
 		_currentGestureChanged.OnNext(_gesture);
 	}
 }

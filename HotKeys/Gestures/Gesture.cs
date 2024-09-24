@@ -1,8 +1,17 @@
+using System.Collections.Immutable;
+
 namespace HotKeys.Gestures;
 
-public abstract class Gesture
+public sealed class Gesture
 {
-	public abstract IReadOnlySet<object> Keys { get; }
+	public static Gesture Empty { get; } = new(ImmutableSortedSet<object>.Empty);
+
+	public ImmutableSortedSet<object> Keys { get; }
+
+	public Gesture(ImmutableSortedSet<object> keys)
+	{
+		Keys = keys;
+	}
 
 	public override string ToString()
 	{
