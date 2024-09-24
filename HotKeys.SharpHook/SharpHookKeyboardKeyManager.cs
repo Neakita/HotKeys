@@ -5,14 +5,14 @@ using SharpHook.Reactive;
 
 namespace HotKeys.SharpHook;
 
-public class SharpHookKeyboardKeyManager : KeyManager<FormattedSharpHookKeyCode>
+public class SharpHookKeyboardKeyManager : KeyManager<FormattedKeyCode>
 {
-	public IObservable<FormattedSharpHookKeyCode> KeyPressed =>
+	public IObservable<FormattedKeyCode> KeyPressed =>
 		_hook.KeyPressed
 			.Select(TransformArgs)
 			.Select(TransformToFormatted);
 
-	public IObservable<FormattedSharpHookKeyCode> KeyReleased =>
+	public IObservable<FormattedKeyCode> KeyReleased =>
 		_hook.KeyReleased
 			.Select(TransformArgs)
 			.Select(TransformToFormatted);
@@ -29,8 +29,8 @@ public class SharpHookKeyboardKeyManager : KeyManager<FormattedSharpHookKeyCode>
 		return args.Data.KeyCode;
 	}
 
-	private static FormattedSharpHookKeyCode TransformToFormatted(KeyCode keyCode)
+	private static FormattedKeyCode TransformToFormatted(KeyCode keyCode)
 	{
-		return new FormattedSharpHookKeyCode(keyCode);
+		return new FormattedKeyCode(keyCode);
 	}
 }

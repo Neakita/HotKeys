@@ -6,7 +6,7 @@ using SharpHook.Native;
 using SharpHook.Reactive;
 
 SimpleReactiveGlobalHook hook = new();
-KeyManagerFilter<FormattedSharpHookKeyCode> keyManager = new(new SharpHookKeyboardKeyManager(hook));
+KeyManagerFilter<FormattedKeyCode> keyManager = new(new SharpHookKeyboardKeyManager(hook));
 SharpHookMouseButtonsManager mouseButtonsManager = new(hook);
 GestureManager gestureManager = new(new AggregateKeyManager([keyManager, mouseButtonsManager]));
 gestureManager.CurrentGestureChanged.Subscribe(gesture => Console.WriteLine($"[GestureManager] Gesture: {gesture}"));

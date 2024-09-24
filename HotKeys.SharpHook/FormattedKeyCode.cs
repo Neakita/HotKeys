@@ -3,36 +3,36 @@ using SharpHook.Native;
 
 namespace HotKeys.SharpHook;
 
-public readonly struct FormattedSharpHookKeyCode : IEquatable<FormattedSharpHookKeyCode>, IComparable
+public readonly struct FormattedKeyCode : IEquatable<FormattedKeyCode>, IComparable
 {
-	public static implicit operator FormattedSharpHookKeyCode(KeyCode keyCode)
+	public static implicit operator FormattedKeyCode(KeyCode keyCode)
 	{
-		return new FormattedSharpHookKeyCode(keyCode);
+		return new FormattedKeyCode(keyCode);
 	}
 
-	public static implicit operator KeyCode(FormattedSharpHookKeyCode formatted)
+	public static implicit operator KeyCode(FormattedKeyCode formatted)
 	{
 		return formatted.KeyCode;
 	}
 
-	public static bool operator ==(FormattedSharpHookKeyCode left, FormattedSharpHookKeyCode right)
+	public static bool operator ==(FormattedKeyCode left, FormattedKeyCode right)
 	{
 		return left.Equals(right);
 	}
 
-	public static bool operator !=(FormattedSharpHookKeyCode left, FormattedSharpHookKeyCode right)
+	public static bool operator !=(FormattedKeyCode left, FormattedKeyCode right)
 	{
 		return !(left == right);
 	}
 
 	public KeyCode KeyCode { get; }
 
-	public FormattedSharpHookKeyCode(KeyCode keyCode)
+	public FormattedKeyCode(KeyCode keyCode)
 	{
 		KeyCode = keyCode;
 	}
 
-	public bool Equals(FormattedSharpHookKeyCode other)
+	public bool Equals(FormattedKeyCode other)
 	{
 		return KeyCode == other.KeyCode;
 	}
@@ -45,7 +45,7 @@ public readonly struct FormattedSharpHookKeyCode : IEquatable<FormattedSharpHook
 
 	public override bool Equals(object? obj)
 	{
-		return obj is FormattedSharpHookKeyCode other && Equals(other);
+		return obj is FormattedKeyCode other && Equals(other);
 	}
 
 	public override int GetHashCode()

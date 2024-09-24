@@ -3,36 +3,36 @@ using SharpHook.Native;
 
 namespace HotKeys.SharpHook;
 
-public readonly struct FormattedSharpHookMouseButton : IEquatable<FormattedSharpHookMouseButton>, IComparable
+public readonly struct FormattedSharpButton : IEquatable<FormattedSharpButton>, IComparable
 {
-	public static implicit operator FormattedSharpHookMouseButton(MouseButton button)
+	public static implicit operator FormattedSharpButton(MouseButton button)
 	{
-		return new FormattedSharpHookMouseButton(button);
+		return new FormattedSharpButton(button);
 	}
 
-	public static implicit operator MouseButton(FormattedSharpHookMouseButton formatted)
+	public static implicit operator MouseButton(FormattedSharpButton formatted)
 	{
 		return formatted.Button;
 	}
 
-	public static bool operator ==(FormattedSharpHookMouseButton left, FormattedSharpHookMouseButton right)
+	public static bool operator ==(FormattedSharpButton left, FormattedSharpButton right)
 	{
 		return left.Equals(right);
 	}
 
-	public static bool operator !=(FormattedSharpHookMouseButton left, FormattedSharpHookMouseButton right)
+	public static bool operator !=(FormattedSharpButton left, FormattedSharpButton right)
 	{
 		return !(left == right);
 	}
 
 	public MouseButton Button { get; }
 
-	public FormattedSharpHookMouseButton(MouseButton button)
+	public FormattedSharpButton(MouseButton button)
 	{
 		Button = button;
 	}
 
-	public bool Equals(FormattedSharpHookMouseButton other)
+	public bool Equals(FormattedSharpButton other)
 	{
 		return Button == other.Button;
 	}
@@ -45,7 +45,7 @@ public readonly struct FormattedSharpHookMouseButton : IEquatable<FormattedSharp
 
 	public override bool Equals(object? obj)
 	{
-		return obj is FormattedSharpHookMouseButton other && Equals(other);
+		return obj is FormattedSharpButton other && Equals(other);
 	}
 
 	public override int GetHashCode()

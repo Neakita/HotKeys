@@ -5,10 +5,10 @@ using SharpHook.Reactive;
 
 namespace HotKeys.SharpHook;
 
-public sealed class SharpHookMouseButtonsManager : KeyManager<FormattedSharpHookMouseButton>
+public sealed class SharpHookMouseButtonsManager : KeyManager<FormattedSharpButton>
 {
-	public IObservable<FormattedSharpHookMouseButton> KeyPressed { get; }
-	public IObservable<FormattedSharpHookMouseButton> KeyReleased { get; }
+	public IObservable<FormattedSharpButton> KeyPressed { get; }
+	public IObservable<FormattedSharpButton> KeyReleased { get; }
 
 	public SharpHookMouseButtonsManager(IReactiveGlobalHook hook)
 	{
@@ -35,8 +35,8 @@ public sealed class SharpHookMouseButtonsManager : KeyManager<FormattedSharpHook
 		return button;
 	}
 
-	private static FormattedSharpHookMouseButton TransformToFormatted(MouseButton button)
+	private static FormattedSharpButton TransformToFormatted(MouseButton button)
 	{
-		return new FormattedSharpHookMouseButton(button);
+		return new FormattedSharpButton(button);
 	}
 }
