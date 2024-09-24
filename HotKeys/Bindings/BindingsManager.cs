@@ -13,16 +13,16 @@ public sealed class BindingsManager : IDisposable
 
 	public Binding CreateBinding(
 		Action action,
-		InputTypes availableInputTypes = InputTypes.AllOneTime,
-		InputTypes initialInputType = InputTypes.Press)
+		InputTypes initialInputType = InputTypes.Press,
+		InputTypes availableInputTypes = InputTypes.All)
 	{
 		return CreateBinding(new PlainActionRunner(action), availableInputTypes, initialInputType);
 	}
 
 	public Binding CreateBinding(
 		Action<ActionContext> action,
-		InputTypes availableInputTypes = InputTypes.AllOneTime,
-		InputTypes initialInputType = InputTypes.Press)
+		InputTypes initialInputType = InputTypes.Press,
+		InputTypes availableInputTypes = InputTypes.All)
 	{
 		ContextActionRunner actionRunner = new(action);
 		var binding = CreateBinding(actionRunner, availableInputTypes, initialInputType);

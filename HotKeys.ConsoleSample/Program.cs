@@ -12,14 +12,14 @@ GestureManager gestureManager = new(new AggregateKeyManager([keyManager, mouseBu
 gestureManager.CurrentGestureChanged.Subscribe(gesture => Console.WriteLine($"[GestureManager] Gesture: {gesture}"));
 
 BindingsManager bindingsManager = new(gestureManager);
-var binding = bindingsManager.CreateBinding(() => Console.WriteLine("[BindingsManager] Action!"), InputTypes.All, InputTypes.Tap);
+var binding = bindingsManager.CreateBinding(() => Console.WriteLine("[BindingsManager] Action!"), InputTypes.Tap);
 var continuousBinding = bindingsManager.CreateBinding(context =>
 {
 	var start = DateTime.UtcNow;
 	context.WaitForElimination();
 	Console.WriteLine($"[BindingsManager] Action for {(DateTime.UtcNow - start).TotalSeconds} seconds!");
-}, InputTypes.All, InputTypes.LongHold);
-var gesture = new Gesture([new FormattedSharpHookKeyCode(KeyCode.VcQ)]);
+}, InputTypes.LongHold);
+var gesture = new Gesture([new FormattedKeyCode(KeyCode.VcQ)]);
 bindingsManager.SetGesture(binding, gesture);
 bindingsManager.SetGesture(continuousBinding, gesture);
 
