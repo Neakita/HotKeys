@@ -34,7 +34,8 @@ public sealed class Binding : IDisposable
 
 	public void Dispose()
 	{
-		_disposeAction(this);
+		if (_gesture != null)
+			_disposeAction(this);
 	}
 	
 	internal Behavior Behavior { get; private set; }
