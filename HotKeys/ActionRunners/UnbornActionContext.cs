@@ -10,6 +10,11 @@ internal sealed class UnbornActionContext : ActionContext
 	{
 	}
 
+	public override bool WaitForElimination(TimeSpan timeout)
+	{
+		return true;
+	}
+
 	internal UnbornActionContext(Binding binding) : base(binding)
 	{
 	}

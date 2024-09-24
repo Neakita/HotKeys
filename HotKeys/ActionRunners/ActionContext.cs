@@ -8,6 +8,7 @@ public abstract class ActionContext
 	public abstract bool Alive { get; }
 
 	public abstract void WaitForElimination();
+	public abstract bool WaitForElimination(TimeSpan timeout);
 
 	protected internal ActionContext(Binding binding)
 	{

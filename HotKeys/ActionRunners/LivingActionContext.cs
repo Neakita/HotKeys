@@ -11,6 +11,11 @@ internal sealed class LivingActionContext : ActionContext
 		_taskCompletionSource.Task.Wait();
 	}
 
+	public override bool WaitForElimination(TimeSpan timeout)
+	{
+		return _taskCompletionSource.Task.Wait(timeout);
+	}
+
 	internal LivingActionContext(Binding binding) : base(binding)
 	{
 	}
