@@ -20,7 +20,7 @@ internal sealed class BindingsStateManager
 	{
 		var gesture = binding.Gesture;
 		Guard.IsNotNull(gesture);
-		var notPressedBindings = NotPressedBindings[(byte)gesture.Keys.Count];
+		var notPressedBindings = GetNotPressedBindingsSet(gesture);
 		var pressedBindings = GetPressedBindingsSet(gesture);
 		Guard.IsTrue(notPressedBindings.Remove(binding));
 		Guard.IsTrue(pressedBindings.Add(binding));
@@ -30,8 +30,8 @@ internal sealed class BindingsStateManager
 	{
 		var gesture = binding.Gesture;
 		Guard.IsNotNull(gesture);
-		var notPressedBindings = NotPressedBindings[(byte)gesture.Keys.Count];
-		var pressedBindings = PressedBindings[gesture];
+		var notPressedBindings = GetNotPressedBindingsSet(gesture);
+		var pressedBindings = GetPressedBindingsSet(gesture);
 		Guard.IsTrue(pressedBindings.Remove(binding));
 		Guard.IsTrue(notPressedBindings.Add(binding));
 	}
@@ -39,8 +39,8 @@ internal sealed class BindingsStateManager
 	public void SetNotPressed(Gesture gesture)
 	{
 		Guard.IsNotNull(gesture);
-		var notPressedBindings = NotPressedBindings[(byte)gesture.Keys.Count];
-		var pressedBindings = PressedBindings[gesture];
+		var notPressedBindings = GetNotPressedBindingsSet(gesture);
+		var pressedBindings = GetPressedBindingsSet(gesture);
 		Guard.IsTrue(pressedBindings.All(notPressedBindings.Add));
 		pressedBindings.Clear();
 	}
@@ -49,8 +49,8 @@ internal sealed class BindingsStateManager
 	{
 		var gesture = binding.Gesture;
 		Guard.IsNotNull(gesture);
-		var pressedBindings = PressedBindings[gesture];
-		var notPressedBindings = NotPressedBindings[(byte)gesture.Keys.Count];
+		var pressedBindings = GetPressedBindingsSet(gesture);
+		var notPressedBindings = GetNotPressedBindingsSet(gesture);
 		var pressedBindingsContains = pressedBindings.Contains(binding);
 		var notPressedBindingsContains = notPressedBindings.Contains(binding);
 		Guard.IsTrue(pressedBindingsContains ^ notPressedBindingsContains);
@@ -61,8 +61,8 @@ internal sealed class BindingsStateManager
 	{
 		var gesture = binding.Gesture;
 		Guard.IsNotNull(gesture);
-		var notPressedBindings = NotPressedBindings[(byte)gesture.Keys.Count];
-		var pressedBindings = PressedBindings[gesture];
+		var notPressedBindings = GetNotPressedBindingsSet(gesture);
+		var pressedBindings = GetPressedBindingsSet(gesture);
 		Guard.IsTrue(notPressedBindings.Remove(binding) || pressedBindings.Remove(binding));
 	}
 
