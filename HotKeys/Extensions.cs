@@ -9,8 +9,10 @@ internal static class Extensions
 		compositeDisposable.Add(disposable);
 	}
 
-	public static IEnumerable<T> WhereNot<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+	public static IEnumerable<KeyValuePair<TKey, TValue>> WhereKeyNot<TKey, TValue>(
+		this IEnumerable<KeyValuePair<TKey, TValue>> source,
+		Func<TKey, bool> predicate)
 	{
-		return source.Where(item => !predicate(item));
+		return source.Where(pair => !predicate(pair.Key));
 	}
 }

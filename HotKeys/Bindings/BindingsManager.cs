@@ -83,15 +83,16 @@ public sealed class BindingsManager : IDisposable
 
 		var justReleasedBindings = _bindingsStateManager
 			.PressedBindings
-			.WhereNot(ShouldBePressed)
+			.WhereKeyNot(ShouldBePressed)
 			.ToList();
 
-		foreach (var binding in justReleasedBindings)
+		foreach (var (gesture, bindings) in justReleasedBindings)
 		{
-			binding.Behavior.OnReleased();
-			_bindingsStateManager.SetNotPressed(binding);
+			foreach (var binding in bindings)
+				binding.Behavior.OnReleased();
+			_bindingsStateManager.SetNotPressed(gesture);
 		}
-		
+
 		foreach (var binding in justPressedBindings)
 		{
 			binding.Behavior.OnPressed();
@@ -102,8 +103,13 @@ public sealed class BindingsManager : IDisposable
 	private bool ShouldBePressed(Binding binding)
 	{
 		Guard.IsNotNull(binding.Gesture);
+		return ShouldBePressed(binding.Gesture);
+	}
+
+	private bool ShouldBePressed(Gesture gesture)
+	{
 		var currentGestureKeys = _currentGesture.Keys;
-		var bindingKeys = binding.Gesture.Keys;
+		var bindingKeys = gesture.Keys;
 		return bindingKeys.Count <= currentGestureKeys.Count && bindingKeys.IsSubsetOf(currentGestureKeys);
 	}
 }

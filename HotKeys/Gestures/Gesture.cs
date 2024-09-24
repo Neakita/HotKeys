@@ -17,4 +17,22 @@ public sealed class Gesture
 	{
 		return string.Join(" + ", Keys);
 	}
+
+	public override bool Equals(object? obj)
+	{
+		return ReferenceEquals(this, obj) || obj is Gesture other && Equals(other);
+	}
+
+	public override int GetHashCode()
+	{
+		HashCode hashCode = new();
+		foreach (object key in Keys)
+			hashCode.Add(key);
+		return hashCode.ToHashCode();
+	}
+
+	private bool Equals(Gesture other)
+	{
+		return Keys.SetEquals(other.Keys);
+	}
 }
