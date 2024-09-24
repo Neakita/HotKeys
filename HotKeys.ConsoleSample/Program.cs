@@ -13,10 +13,10 @@ gestureManager.CurrentGestureChanged.Subscribe(gesture => Console.WriteLine($"[G
 
 BindingsManager bindingsManager = new(gestureManager);
 var binding = bindingsManager.CreateBinding(() => Console.WriteLine("[BindingsManager] Action!"), InputTypes.All, InputTypes.Tap);
-var continuousBinding = bindingsManager.CreateBinding(task =>
+var continuousBinding = bindingsManager.CreateBinding(context =>
 {
 	var start = DateTime.UtcNow;
-	task.Wait();
+	context.WaitForElimination();
 	Console.WriteLine($"[BindingsManager] Action for {(DateTime.UtcNow - start).TotalSeconds} seconds!");
 }, InputTypes.All, InputTypes.LongHold);
 var gesture = new Gesture([new FormattedSharpHookKeyCode(KeyCode.VcQ)]);

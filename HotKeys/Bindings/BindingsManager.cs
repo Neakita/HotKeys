@@ -20,19 +20,14 @@ public sealed class BindingsManager : IDisposable
 	}
 
 	public Binding CreateBinding(
-		Action<CancellationToken> action,
-		InputTypes availableInputTypes = InputTypes.AllContinuous,
-		InputTypes initialInputType = InputTypes.Hold)
+		Action<ActionContext> action,
+		InputTypes availableInputTypes = InputTypes.AllOneTime,
+		InputTypes initialInputType = InputTypes.Press)
 	{
-		return CreateBinding(new CancellableActionRunner(action), availableInputTypes, initialInputType);
-	}
-
-	public Binding CreateBinding(
-		Action<Task> action,
-		InputTypes availableInputTypes = InputTypes.AllContinuous,
-		InputTypes initialInputType = InputTypes.Hold)
-	{
-		return CreateBinding(new TaskActionRunner(action), availableInputTypes, initialInputType);
+		ContextActionRunner actionRunner = new(action);
+		var binding = CreateBinding(actionRunner, availableInputTypes, initialInputType);
+		actionRunner.Initialize(binding);
+		return binding;
 	}
 
 	public void SetGesture(Binding binding, Gesture? gesture)
