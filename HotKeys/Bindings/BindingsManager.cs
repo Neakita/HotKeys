@@ -102,13 +102,8 @@ public sealed class BindingsManager : IDisposable
 	private bool ShouldBePressed(Binding binding)
 	{
 		Guard.IsNotNull(binding.Gesture);
-		return ShouldBePressed(binding.Gesture);
-	}
-
-	private bool ShouldBePressed(Gesture gesture)
-	{
 		var currentGestureKeys = _currentGesture.Keys;
-		var bindingKeys = gesture.Keys;
+		var bindingKeys = binding.Gesture.Keys;
 		return bindingKeys.Count <= currentGestureKeys.Count && bindingKeys.IsSubsetOf(currentGestureKeys);
 	}
 }
