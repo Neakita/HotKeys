@@ -18,9 +18,10 @@ var continuousBinding = bindingsManager.CreateBinding(task =>
 	var start = DateTime.UtcNow;
 	task.Wait();
 	Console.WriteLine($"[BindingsManager] Action for {(DateTime.UtcNow - start).TotalSeconds} seconds!");
-});
-binding.Gesture = new Gesture([new FormattedSharpHookKeyCode(KeyCode.VcQ)]);
-continuousBinding.Gesture = new Gesture([new FormattedSharpHookKeyCode(KeyCode.VcQ)]);
+}, InputTypes.All, InputTypes.LongHold);
+var gesture = new Gesture([new FormattedSharpHookKeyCode(KeyCode.VcQ)]);
+bindingsManager.SetGesture(binding, gesture);
+bindingsManager.SetGesture(continuousBinding, gesture);
 
 hook.RunAsync();
 while (true)

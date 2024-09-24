@@ -35,60 +35,80 @@ public sealed class BindingsManager : IDisposable
 		return CreateBinding(new TaskActionRunner(action), availableInputTypes, initialInputType);
 	}
 
+	public void SetGesture(Binding binding, Gesture? gesture)
+	{
+		if (binding.Gesture != null)
+		{
+			if (_bindingsStateManager.IsPressed(binding))
+				binding.Behavior.OnReleased();
+			_bindingsStateManager.RemoveBinding(binding);
+		}
+		binding.Gesture = gesture;
+		if (gesture != null)
+		{
+			var shouldBePressed = ShouldBePressed(binding);
+			_bindingsStateManager.AddBinding(binding, shouldBePressed);
+			if (shouldBePressed)
+				binding.Behavior.OnPressed();
+		}
+	}
+
 	public void Dispose()
 	{
 		_disposable.Dispose();
 	}
+
+	private readonly BindingsStateManager _bindingsStateManager = new();
+	private readonly IDisposable _disposable;
+	private Gesture _currentGesture = Gesture.Empty;
 
 	private Binding CreateBinding(
 		ActionRunner actionRunner,
 		InputTypes availableInputTypes,
 		InputTypes initialInputType)
 	{
-		Binding binding = new(actionRunner, availableInputTypes, initialInputType, RemoveBinding);
-		Guard.IsTrue(_bindings.Add(binding));
-		Guard.IsTrue(_notPressedBindings.Add(binding));
+		Binding binding = new(actionRunner, availableInputTypes, initialInputType, _bindingsStateManager.RemoveBinding);
 		return binding;
-	}
-
-	private readonly HashSet<Binding> _bindings = new();
-	private readonly HashSet<Binding> _notPressedBindings = new();
-	private readonly Dictionary<Gesture, HashSet<Binding>> _pressedBindings = new();
-	private readonly IDisposable _disposable;
-
-	private void RemoveBinding(Binding binding)
-	{
-		Guard.IsTrue(_bindings.Remove(binding));
 	}
 
 	private void OnGestureChanged(Gesture currentGesture)
 	{
-		foreach (var (gesture, bindings) in _pressedBindings)
-		foreach (var binding in bindings)
-		{
-			if (gesture.Keys.IsSubsetOf(currentGesture.Keys))
-				continue;
-			Guard.IsTrue(bindings.Remove(binding));
-			if (bindings.Count == 0)
-				Guard.IsTrue(_pressedBindings.Remove(gesture));
-			Guard.IsTrue(_notPressedBindings.Add(binding));
-			binding.Behavior.OnReleased();
-		}
+		_currentGesture = currentGesture;
 
-		foreach (var binding in _notPressedBindings)
+		var justPressedBindings = _bindingsStateManager.NotPressedBindings
+			.TakeWhile(pair => pair.Key <= currentGesture.Keys.Count)
+			.SelectMany(pair => pair.Value)
+			.Where(ShouldBePressed)
+			.ToList();
+
+		var justReleasedBindings = _bindingsStateManager
+			.PressedBindings
+			.WhereNot(ShouldBePressed)
+			.ToList();
+
+		foreach (var binding in justReleasedBindings)
 		{
-			if (binding.Gesture == null)
-				continue;
-			if (binding.Gesture.Keys.Count > currentGesture.Keys.Count)
-				continue;
-			if (!binding.Gesture.Keys.IsSubsetOf(currentGesture.Keys))
-				continue;
-			Guard.IsTrue(_notPressedBindings.Remove(binding));
-			if (_pressedBindings.TryGetValue(currentGesture, out var bindings))
-				Guard.IsTrue(bindings.Add(binding));
-			else
-				_pressedBindings.Add(currentGesture, [binding]);
-			binding.Behavior.OnPressed();
+			binding.Behavior.OnReleased();
+			_bindingsStateManager.SetNotPressed(binding);
 		}
+		
+		foreach (var binding in justPressedBindings)
+		{
+			binding.Behavior.OnPressed();
+			_bindingsStateManager.SetPressed(binding);
+		}
+	}
+
+	private bool ShouldBePressed(Binding binding)
+	{
+		Guard.IsNotNull(binding.Gesture);
+		return ShouldBePressed(binding.Gesture);
+	}
+
+	private bool ShouldBePressed(Gesture gesture)
+	{
+		var currentGestureKeys = _currentGesture.Keys;
+		var bindingKeys = gesture.Keys;
+		return bindingKeys.Count <= currentGestureKeys.Count && bindingKeys.IsSubsetOf(currentGestureKeys);
 	}
 }

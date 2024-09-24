@@ -41,6 +41,7 @@ internal sealed class LongHoldBehavior : Behavior
 			_cancellationTokenSource = null;
 			if (_invoked.Value)
 				ActionRunner.EndContinuousRun();
+			_invoked = null;
 		}
 	}
 

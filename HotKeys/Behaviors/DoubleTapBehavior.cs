@@ -19,9 +19,9 @@ internal sealed class DoubleTapBehavior : Behavior
 	{
 		Guard.IsNotNull(_pressTime);
 		var interval = DateTime.UtcNow - _pressTime.Value;
+		_pressTime = null;
 		if (interval <= MaximumPressAndReleaseInterval)
 			OnTap();
-		_pressTime = null;
 	}
 
 	private static readonly TimeSpan MaximumPressAndReleaseInterval = TimeSpan.FromMilliseconds(125);

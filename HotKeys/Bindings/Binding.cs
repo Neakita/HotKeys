@@ -24,7 +24,7 @@ public sealed class Binding : IDisposable
 	public Gesture? Gesture
 	{
 		get => _gesture;
-		set
+		internal set
 		{
 			if (value != null)
 				Guard.IsFalse(value.Keys.IsEmpty);
