@@ -7,6 +7,7 @@ public sealed class Gesture
 	public static Gesture Empty { get; } = new(ImmutableSortedSet<object>.Empty);
 
 	public ImmutableSortedSet<object> Keys { get; }
+	public bool IsEmpty => Keys.IsEmpty;
 
 	public Gesture(ImmutableSortedSet<object> keys)
 	{

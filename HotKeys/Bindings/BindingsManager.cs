@@ -30,16 +30,16 @@ public sealed class BindingsManager : IDisposable
 		return binding;
 	}
 
-	public void SetGesture(Binding binding, Gesture? gesture)
+	public void SetGesture(Binding binding, Gesture gesture)
 	{
-		if (binding.Gesture != null)
+		if (!binding.Gesture.IsEmpty)
 		{
 			if (_bindingsStateManager.IsPressed(binding))
 				binding.Behavior.OnReleased();
 			_bindingsStateManager.RemoveBinding(binding);
 		}
 		binding.Gesture = gesture;
-		if (gesture != null)
+		if (!gesture.IsEmpty)
 		{
 			var shouldBePressed = ShouldBePressed(binding);
 			_bindingsStateManager.AddBinding(binding, shouldBePressed);

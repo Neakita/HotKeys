@@ -21,20 +21,15 @@ public sealed class Binding : IDisposable
 		}
 	}
 
-	public Gesture? Gesture
+	public Gesture Gesture
 	{
 		get => _gesture;
-		internal set
-		{
-			if (value != null)
-				Guard.IsFalse(value.Keys.IsEmpty);
-			_gesture = value;
-		}
+		internal set => _gesture = value;
 	}
 
 	public void Dispose()
 	{
-		if (_gesture != null)
+		if (!_gesture.IsEmpty)
 			_disposeAction(this);
 	}
 	
@@ -55,5 +50,5 @@ public sealed class Binding : IDisposable
 	private readonly ActionRunner _actionRunner;
 	private readonly Action<Binding> _disposeAction;
 	private InputTypes _inputType;
-	private Gesture? _gesture;
+	private Gesture _gesture = Gesture.Empty;
 }
