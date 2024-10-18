@@ -13,6 +13,8 @@ internal sealed class LivingActionContext : ActionContext
 
 	public override bool WaitForElimination(TimeSpan timeout)
 	{
+		if (timeout <= TimeSpan.Zero)
+			return _taskCompletionSource.Task.IsCompleted;
 		return _taskCompletionSource.Task.Wait(timeout);
 	}
 
