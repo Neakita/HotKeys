@@ -5,6 +5,7 @@ namespace HotKeys.ActionRunners;
 internal sealed class LivingActionContext : ActionContext
 {
 	public override bool Alive => _alive;
+	public override Task Elimination => _taskCompletionSource.Task;
 
 	public override void WaitForElimination()
 	{

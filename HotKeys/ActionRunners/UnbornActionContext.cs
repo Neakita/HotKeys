@@ -5,6 +5,7 @@ namespace HotKeys.ActionRunners;
 internal sealed class UnbornActionContext : ActionContext
 {
 	public override bool Alive => false;
+	public override Task Elimination => Task.CompletedTask;
 
 	public override void WaitForElimination()
 	{
