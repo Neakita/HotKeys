@@ -3,36 +3,36 @@ using SharpHook.Native;
 
 namespace HotKeys.SharpHook;
 
-public readonly struct FormattedSharpButton : IEquatable<FormattedSharpButton>, IComparable
+public readonly struct FormattedButton : IEquatable<FormattedButton>, IComparable
 {
-	public static implicit operator FormattedSharpButton(MouseButton button)
+	public static implicit operator FormattedButton(MouseButton button)
 	{
-		return new FormattedSharpButton(button);
+		return new FormattedButton(button);
 	}
 
-	public static implicit operator MouseButton(FormattedSharpButton formatted)
+	public static implicit operator MouseButton(FormattedButton formatted)
 	{
 		return formatted.Button;
 	}
 
-	public static bool operator ==(FormattedSharpButton left, FormattedSharpButton right)
+	public static bool operator ==(FormattedButton left, FormattedButton right)
 	{
 		return left.Equals(right);
 	}
 
-	public static bool operator !=(FormattedSharpButton left, FormattedSharpButton right)
+	public static bool operator !=(FormattedButton left, FormattedButton right)
 	{
 		return !(left == right);
 	}
 
 	public MouseButton Button { get; }
 
-	public FormattedSharpButton(MouseButton button)
+	public FormattedButton(MouseButton button)
 	{
 		Button = button;
 	}
 
-	public bool Equals(FormattedSharpButton other)
+	public bool Equals(FormattedButton other)
 	{
 		return Button == other.Button;
 	}
@@ -45,7 +45,7 @@ public readonly struct FormattedSharpButton : IEquatable<FormattedSharpButton>, 
 
 	public override bool Equals(object? obj)
 	{
-		return obj is FormattedSharpButton other && Equals(other);
+		return obj is FormattedButton other && Equals(other);
 	}
 
 	public override int GetHashCode()

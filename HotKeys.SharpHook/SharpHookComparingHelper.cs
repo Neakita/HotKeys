@@ -27,7 +27,7 @@ internal static class SharpHookComparingHelper
 	private static uint GetPriority(object value) => value switch
 	{
 		FormattedKeyCode keyCode => GetKeyPriority(keyCode),
-		FormattedSharpButton mouseButton => GetMouseButtonPriority(mouseButton),
+		FormattedButton mouseButton => GetMouseButtonPriority(mouseButton),
 		_ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
 	};
 
