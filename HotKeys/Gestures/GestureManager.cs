@@ -25,7 +25,8 @@ public sealed class GestureManager : IDisposable
 	private void AddToGesture(object key)
 	{
 		var builder = _gesture.Keys.ToBuilder();
-		Guard.IsTrue(builder.Add(key));
+		var isAdded = builder.Add(key);
+		Guard.IsTrue(isAdded);
 		_gesture = new Gesture(builder.ToImmutable());
 		_currentGestureChanged.OnNext(_gesture);
 	}
