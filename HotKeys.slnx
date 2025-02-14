@@ -1,4 +1,5 @@
 ﻿<Solution>
+  <Project Path="HotKeys.Avalonia\HotKeys.Avalonia.csproj" Type="Classic C#" />
   <Project Path="HotKeys.ConsoleSample\HotKeys.ConsoleSample.csproj" Type="Classic C#" />
   <Project Path="HotKeys.SharpHook\HotKeys.SharpHook.csproj" Type="Classic C#" />
   <Project Path="HotKeys.Tests\HotKeys.Tests.csproj" Type="Classic C#" />
