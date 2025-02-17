@@ -17,6 +17,12 @@ internal sealed class LivingActionContext : ActionContext
 		return _taskCompletionSource.Task.Wait(timeout);
 	}
 
+	public override bool IsEliminatedAfterCompletion(Task task)
+	{
+		var completedTaskIndex = Task.WaitAny(_taskCompletionSource.Task, task);
+		return completedTaskIndex == 0;
+	}
+
 	internal void Eliminate()
 	{
 		_isAlive = false;

@@ -7,4 +7,5 @@ public abstract class ActionContext
 
 	public abstract void WaitForElimination();
 	public abstract bool IsEliminatedAfter(TimeSpan timeout);
+	public abstract bool IsEliminatedAfterCompletion(Task task);
 }
