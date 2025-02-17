@@ -2,7 +2,8 @@ namespace HotKeys.Handlers.Contextual;
 
 public sealed class ActionContext
 {
-	public bool IsAlive { get; private set; } = true;
+	public bool IsAlive => !IsEliminated;
+	public bool IsEliminated { get; private set; }
 
 	public Task Elimination => _taskCompletionSource.Task;
 
@@ -14,8 +15,13 @@ public sealed class ActionContext
 	public bool IsEliminatedAfter(TimeSpan timeout)
 	{
 		if (timeout <= TimeSpan.Zero)
-			return _taskCompletionSource.Task.IsCompleted;
+			return IsEliminated;
 		return _taskCompletionSource.Task.Wait(timeout);
+	}
+
+	public bool IsAliveAfter(TimeSpan timeout)
+	{
+		return !IsEliminatedAfter(timeout);
 	}
 
 	public bool IsEliminatedAfterCompletion(Task task)
@@ -24,9 +30,14 @@ public sealed class ActionContext
 		return completedTaskIndex == 0;
 	}
 
+	public bool IsAliveAfterCompletion(Task task)
+	{
+		return !IsEliminatedAfterCompletion(task);
+	}
+
 	internal void Eliminate()
 	{
-		IsAlive = false;
+		IsEliminated = true;
 		_taskCompletionSource.SetResult();
 	}
 
