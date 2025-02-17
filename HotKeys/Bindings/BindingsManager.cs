@@ -6,9 +6,9 @@ namespace HotKeys.Bindings;
 
 public sealed class BindingsManager : IDisposable
 {
-	public BindingsManager(GestureManager gestureManager)
+	public BindingsManager(IObservable<Gesture> observableGesture)
 	{
-		_disposable = gestureManager.CurrentGestureChanged.Subscribe(OnGestureChanged);
+		_disposable = observableGesture.Subscribe(OnGestureChanged);
 	}
 
 	public Binding CreateBinding(
