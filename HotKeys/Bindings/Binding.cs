@@ -1,54 +1,15 @@
-using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.Diagnostics;
-using HotKeys.ActionRunners;
-using HotKeys.Behaviors;
 using HotKeys.Gestures;
 
 namespace HotKeys.Bindings;
 
-public sealed class Binding : IDisposable
+internal sealed class Binding
 {
-	public InputTypes AvailableInputTypes { get; }
+	public Gesture Gesture { get; }
+	public ContinuousHandler Handler { get; }
 
-	public InputTypes InputType
+	public Binding(Gesture gesture, ContinuousHandler handler)
 	{
-		get => _inputType;
-		[MemberNotNull(nameof(Behavior))] set
-		{
-			_inputType = value;
-			Guard.IsTrue(AvailableInputTypes.HasFlag(value));
-			Behavior = Behavior.Create(value, _actionRunner);
-		}
+		Gesture = gesture;
+		Handler = handler;
 	}
-
-	public Gesture Gesture
-	{
-		get => _gesture;
-		internal set => _gesture = value;
-	}
-
-	public void Dispose()
-	{
-		if (!_gesture.IsEmpty)
-			_disposeAction(this);
-	}
-	
-	internal Behavior Behavior { get; private set; }
-
-	internal Binding(
-		ActionRunner actionRunner,
-		InputTypes availableInputTypes,
-		InputTypes initialInputType,
-		Action<Binding> disposeAction)
-	{
-		AvailableInputTypes = availableInputTypes;
-		_actionRunner = actionRunner;
-		InputType = initialInputType;
-		_disposeAction = disposeAction;
-	}
-
-	private readonly ActionRunner _actionRunner;
-	private readonly Action<Binding> _disposeAction;
-	private InputTypes _inputType;
-	private Gesture _gesture = Gesture.Empty;
 }

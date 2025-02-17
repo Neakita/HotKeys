@@ -1,10 +1,8 @@
-using HotKeys.Bindings;
-
-namespace HotKeys.ActionRunners;
+namespace HotKeys.Handlers.Contextual;
 
 internal sealed class LivingActionContext : ActionContext
 {
-	public override bool Alive => _alive;
+	public override bool IsAlive => _isAlive;
 	public override Task Elimination => _taskCompletionSource.Task;
 
 	public override void WaitForElimination()
@@ -12,23 +10,19 @@ internal sealed class LivingActionContext : ActionContext
 		_taskCompletionSource.Task.Wait();
 	}
 
-	public override bool WaitForElimination(TimeSpan timeout)
+	public override bool IsEliminatedAfter(TimeSpan timeout)
 	{
 		if (timeout <= TimeSpan.Zero)
 			return _taskCompletionSource.Task.IsCompleted;
 		return _taskCompletionSource.Task.Wait(timeout);
 	}
 
-	internal LivingActionContext(Binding binding) : base(binding)
-	{
-	}
-
 	internal void Eliminate()
 	{
-		_alive = false;
+		_isAlive = false;
 		_taskCompletionSource.SetResult();
 	}
 
 	private readonly TaskCompletionSource _taskCompletionSource = new();
-	private bool _alive = true;
+	private bool _isAlive = true;
 }

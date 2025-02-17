@@ -1,5 +1,4 @@
-using CommunityToolkit.Diagnostics;
-using HotKeys.ActionRunners;
+using System.Reactive.Disposables;
 using HotKeys.Gestures;
 
 namespace HotKeys.Bindings;
@@ -11,41 +10,20 @@ public sealed class BindingsManager : IDisposable
 		_disposable = observableGesture.Subscribe(OnGestureChanged);
 	}
 
-	public Binding CreateBinding(
-		Action action,
-		InputTypes initialInputType = InputTypes.Press,
-		InputTypes availableInputTypes = InputTypes.All)
+	public IDisposable Bind(Gesture gesture, ContinuousHandler handler)
 	{
-		return CreateBinding(new PlainActionRunner(action), availableInputTypes, initialInputType);
-	}
-
-	public Binding CreateBinding(
-		Action<ActionContext> action,
-		InputTypes initialInputType = InputTypes.Press,
-		InputTypes availableInputTypes = InputTypes.All)
-	{
-		ContextActionRunner actionRunner = new(action);
-		var binding = CreateBinding(actionRunner, availableInputTypes, initialInputType);
-		actionRunner.Initialize(binding);
-		return binding;
-	}
-
-	public void SetGesture(Binding binding, Gesture gesture)
-	{
-		if (!binding.Gesture.IsEmpty)
+		Binding binding = new(gesture, handler);
+		var isPressed = IsPressed(gesture);
+		_stateManager.AddBinding(binding, isPressed);
+		if (isPressed)
+			handler.Begin();
+		return Disposable.Create((_stateManager, binding), static tuple =>
 		{
-			if (_bindingsStateManager.IsPressed(binding))
-				binding.Behavior.OnReleased();
-			_bindingsStateManager.RemoveBinding(binding);
-		}
-		binding.Gesture = gesture;
-		if (!gesture.IsEmpty)
-		{
-			var shouldBePressed = ShouldBePressed(binding);
-			_bindingsStateManager.AddBinding(binding, shouldBePressed);
-			if (shouldBePressed)
-				binding.Behavior.OnPressed();
-		}
+			var (stateManager, binding) = tuple;
+			stateManager.RemoveBinding(binding, out var wasPressed);
+			if (wasPressed)
+				binding.Handler.End();
+		});
 	}
 
 	public void Dispose()
@@ -53,55 +31,45 @@ public sealed class BindingsManager : IDisposable
 		_disposable.Dispose();
 	}
 
-	private readonly BindingsStateManager _bindingsStateManager = new();
+	private readonly BindingsStateManager _stateManager = new();
 	private readonly IDisposable _disposable;
 	private Gesture _currentGesture = Gesture.Empty;
-
-	private Binding CreateBinding(
-		ActionRunner actionRunner,
-		InputTypes availableInputTypes,
-		InputTypes initialInputType)
-	{
-		Binding binding = new(actionRunner, availableInputTypes, initialInputType, _bindingsStateManager.RemoveBinding);
-		return binding;
-	}
 
 	private void OnGestureChanged(Gesture currentGesture)
 	{
 		_currentGesture = currentGesture;
 
-		var justPressedBindings = _bindingsStateManager.NotPressedBindings
+		var justPressedBindings = _stateManager.NotPressedBindings
 			.TakeWhile(pair => pair.Key <= currentGesture.Keys.Count)
 			.SelectMany(pair => pair.Value)
-			.Where(ShouldBePressed)
+			.Where(IsPressed)
 			.ToList();
 
-		var justReleasedBindings = _bindingsStateManager
+		var justReleasedBindings = _stateManager
 			.PressedBindings
-			.WhereKeyNot(ShouldBePressed)
+			.WhereKeyNot(IsPressed)
 			.ToList();
 
 		foreach (var (gesture, bindings) in justReleasedBindings)
 		{
 			foreach (var binding in bindings)
-				binding.Behavior.OnReleased();
-			_bindingsStateManager.SetNotPressed(gesture);
+				binding.Handler.End();
+			_stateManager.SetNotPressed(gesture);
 		}
 
 		foreach (var binding in justPressedBindings)
 		{
-			binding.Behavior.OnPressed();
-			_bindingsStateManager.SetPressed(binding);
+			binding.Handler.Begin();
+			_stateManager.SetPressed(binding);
 		}
 	}
 
-	private bool ShouldBePressed(Binding binding)
+	private bool IsPressed(Binding binding)
 	{
-		Guard.IsNotNull(binding.Gesture);
-		return ShouldBePressed(binding.Gesture);
+		return IsPressed(binding.Gesture);
 	}
 
-	private bool ShouldBePressed(Gesture gesture)
+	private bool IsPressed(Gesture gesture)
 	{
 		var currentGestureKeys = _currentGesture.Keys;
 		var bindingKeys = gesture.Keys;

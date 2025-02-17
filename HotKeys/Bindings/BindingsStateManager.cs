@@ -57,13 +57,15 @@ internal sealed class BindingsStateManager
 		return pressedBindingsContains;
 	}
 
-	public void RemoveBinding(Binding binding)
+	public void RemoveBinding(Binding binding, out bool wasPressed)
 	{
 		var gesture = binding.Gesture;
 		Guard.IsNotNull(gesture);
 		var notPressedBindings = GetNotPressedBindingsSet(gesture);
 		var pressedBindings = GetPressedBindingsSet(gesture);
-		Guard.IsTrue(notPressedBindings.Remove(binding) || pressedBindings.Remove(binding));
+		var removedFromPressed = pressedBindings.Remove(binding);
+		Guard.IsTrue(removedFromPressed || notPressedBindings.Remove(binding));
+		wasPressed = removedFromPressed;
 	}
 
 	private HashSet<Binding> GetPressedBindingsSet(Gesture gesture)
