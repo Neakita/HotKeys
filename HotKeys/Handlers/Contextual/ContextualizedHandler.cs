@@ -12,7 +12,7 @@ public sealed class ContextualizedHandler : ContinuousHandler
 	public void Begin()
 	{
 		Guard.IsNull(_currentContext);
-		_currentContext = new LivingActionContext();
+		_currentContext = new ActionContext();
 		Task.Run(() => _action(_currentContext));
 	}
 
@@ -24,5 +24,5 @@ public sealed class ContextualizedHandler : ContinuousHandler
 	}
 
 	private readonly Action<ActionContext> _action;
-	private LivingActionContext? _currentContext;
+	private ActionContext? _currentContext;
 }
