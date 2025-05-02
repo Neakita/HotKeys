@@ -11,18 +11,20 @@ public sealed class ContextualizedHandler : ContinuousHandler
 
 	public void Begin()
 	{
+		if (!_previousRun.IsCompleted)
+			return;
 		Guard.IsNull(_currentContext);
 		_currentContext = new ActionContext();
-		Task.Run(() => _action(_currentContext));
+		_previousRun = Task.Run(() => _action(_currentContext));
 	}
 
 	public void End()
 	{
-		Guard.IsNotNull(_currentContext);
-		_currentContext.Eliminate();
+		_currentContext?.Eliminate();
 		_currentContext = null;
 	}
 
 	private readonly Action<ActionContext> _action;
+	private Task _previousRun = Task.CompletedTask;
 	private ActionContext? _currentContext;
 }
