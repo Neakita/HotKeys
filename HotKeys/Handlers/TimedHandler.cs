@@ -18,7 +18,7 @@ public sealed class TimedHandler : ContinuousHandler
 		var session = new TimedHandlerSession
 		{
 			Task = task,
-			NextTimestamp = default
+			NextTimestamp = DateTime.UtcNow
 		};
 		Guard.IsNull(_session);
 		_session = session;
