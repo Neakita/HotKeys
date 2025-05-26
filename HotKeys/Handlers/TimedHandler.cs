@@ -14,26 +14,24 @@ public sealed class TimedHandler : ContinuousHandler
 
 	public void Begin()
 	{
-		Task task = new(Loop);
-		var session = new TimedHandlerSession
-		{
-			Task = task,
-			NextTimestamp = DateTime.UtcNow
-		};
 		Guard.IsNull(_session);
-		_session = session;
-		task.Start();
+		if (!_lookTask.IsCompleted)
+			return;
+		_session = new TimedHandlerSession();
+		_lookTask = Task.Run(Loop);
 	}
 
 	public void End()
 	{
-		Guard.IsNotNull(_session);
+		if (_session == null)
+			return;
 		_session.ShouldStop = true;
 		_session = null;
 	}
 
 	private readonly OnetimeHandler _loopHandler;
 	private readonly OnetimeHandler? _loopEndHandler;
+	private Task _lookTask = Task.CompletedTask;
 	private TimedHandlerSession? _session;
 
 	private void Loop()
