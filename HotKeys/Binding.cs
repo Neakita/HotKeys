@@ -51,6 +51,8 @@ public sealed class Binding : IDisposable
 		set
 		{
 			ThrowIfDisposed();
+			if (field == value)
+				return;
 			field = value;
 			_manager.UpdateBindingState(this);
 		}
