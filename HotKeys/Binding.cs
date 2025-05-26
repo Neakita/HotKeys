@@ -58,7 +58,6 @@ public sealed class Binding : IDisposable
 
 	public void Dispose()
 	{
-		ThrowIfDisposed();
 		if (_isDisposed)
 			return;
 		_manager.RemoveBinding(this);
