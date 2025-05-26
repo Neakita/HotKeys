@@ -1,5 +1,4 @@
 using System.Reactive.Linq;
-using HotKeys.Gestures;
 
 namespace HotKeys;
 

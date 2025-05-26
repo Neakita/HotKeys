@@ -1,13 +1,14 @@
 using System.Collections.Immutable;
 using CommunityToolkit.Diagnostics;
 
-namespace HotKeys.Gestures;
+namespace HotKeys;
 
 public sealed class Gesture
 {
 	public static Gesture Empty { get; } = new();
 
 	public ImmutableHashSet<object> Keys { get; }
+	public int Length => Keys.Count;
 	public bool IsEmpty => Keys.IsEmpty;
 
 	public Gesture(params ImmutableHashSet<object> keys)
