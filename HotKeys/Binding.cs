@@ -56,7 +56,7 @@ public sealed class Binding : IDisposable
 			field = value;
 			_manager.UpdateBindingState(this);
 		}
-	}
+	} = true;
 
 	public void Dispose()
 	{
