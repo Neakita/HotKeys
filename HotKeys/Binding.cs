@@ -75,8 +75,8 @@ public sealed class Binding : IDisposable
 
 	internal void SetDisposed()
 	{
-		_isDisposed = true;
 		IsPressed = false;
+		_isDisposed = true;
 	}
 
 	private readonly BindingsManager _manager;
