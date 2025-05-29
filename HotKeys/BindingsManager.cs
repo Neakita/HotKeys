@@ -62,6 +62,8 @@ public sealed class BindingsManager : IDisposable
 
 	private bool IsPressed(Gesture gesture)
 	{
+		if (gesture.IsEmpty)
+			return false;
 		var currentGestureKeys = _pressedGesture.Keys;
 		var bindingKeys = gesture.Keys;
 		return bindingKeys.Count <= currentGestureKeys.Count && bindingKeys.IsSubsetOf(currentGestureKeys);
