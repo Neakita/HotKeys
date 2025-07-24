@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using SharpHook.Native;
+using SharpHook.Data;
 
 namespace HotKeys.SharpHook;
 

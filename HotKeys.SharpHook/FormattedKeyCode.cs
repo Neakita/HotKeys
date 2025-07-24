@@ -1,5 +1,5 @@
 using CommunityToolkit.Diagnostics;
-using SharpHook.Native;
+using SharpHook.Data;
 
 namespace HotKeys.SharpHook;
 

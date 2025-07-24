@@ -1,6 +1,6 @@
 using System.Reactive.Linq;
 using SharpHook;
-using SharpHook.Native;
+using SharpHook.Data;
 using SharpHook.Reactive;
 
 namespace HotKeys.SharpHook;
