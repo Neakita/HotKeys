@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using CommunityToolkit.Diagnostics;
 
 namespace HotKeys;
 
@@ -18,20 +17,12 @@ public sealed class Gesture
 
 	public Gesture With(object key)
 	{
-		var builder = Keys.ToBuilder();
-		bool isAdded = builder.Add(key);
-		Guard.IsTrue(isAdded);
-		var keys = builder.ToImmutable();
-		return new Gesture(keys);
+		return new Gesture(Keys.Add(key));
 	}
 
 	public Gesture Without(object key)
 	{
-		var builder = Keys.ToBuilder();
-		bool isRemoved = builder.Remove(key);
-		Guard.IsTrue(isRemoved);
-		var keys = builder.ToImmutable();
-		return new Gesture(keys);
+		return new Gesture(Keys.Remove(key));
 	}
 
 	public override string ToString()
